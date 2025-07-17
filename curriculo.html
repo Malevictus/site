@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Currículo - Criar Currículo</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-nav">
+                <a href="index.html" class="back-link">← Voltar ao Início</a>
+                <h1 class="title">Criar Currículo</h1>
+            </div>
+        </header>
+
+        <main class="main-content curriculum-page">
+            <div class="form-section">
+                <div class="form-container">
+                    <h2>Preencha suas informações</h2>
+                    <form id="curriculumForm" class="curriculum-form">
+                        <div class="form-group">
+                            <label for="nome">Nome Completo *</label>
+                            <input type="text" id="nome" name="nome" required>
+                            <span class="error-message" id="nome-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">E-mail *</label>
+                            <input type="email" id="email" name="email" required>
+                            <span class="error-message" id="email-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefone">Telefone</label>
+                            <input type="tel" id="telefone" name="telefone" placeholder="(11) 99999-9999">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endereco">Endereço</label>
+                            <input type="text" id="endereco" name="endereco" placeholder="Cidade, Estado">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resumo">Resumo Profissional *</label>
+                            <textarea id="resumo" name="resumo" rows="4" required placeholder="Descreva brevemente sua experiência e objetivos profissionais..."></textarea>
+                            <span class="error-message" id="resumo-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="experiencia">Experiência Profissional</label>
+                            <textarea id="experiencia" name="experiencia" rows="4" placeholder="Liste suas experiências profissionais mais relevantes..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="educacao">Formação Acadêmica</label>
+                            <textarea id="educacao" name="educacao" rows="3" placeholder="Informe sua formação acadêmica..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="habilidades">Habilidades</label>
+                            <textarea id="habilidades" name="habilidades" rows="3" placeholder="Liste suas principais habilidades e competências..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="previewBtn" class="btn btn-secondary">Visualizar</button>
+                            <button type="button" id="generatePdfBtn" class="btn btn-primary">Gerar PDF</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <div class="preview-container">
+                    <h2>Pré-visualização</h2>
+                    <div id="curriculumPreview" class="curriculum-preview">
+                        <div class="preview-placeholder">
+                            <p>Preencha o formulário para ver a pré-visualização do seu currículo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Template do currículo para PDF -->
+    <div id="pdfTemplate" class="pdf-template" style="display: none;">
+        <div class="curriculum-document">
+            <header class="curriculum-header">
+                <h1 id="pdf-nome"></h1>
+                <div class="contact-info">
+                    <p id="pdf-email"></p>
+                    <p id="pdf-telefone"></p>
+                    <p id="pdf-endereco"></p>
+                </div>
+            </header>
+
+            <section class="curriculum-section" id="pdf-resumo-section">
+                <h2>Resumo Profissional</h2>
+                <p id="pdf-resumo"></p>
+            </section>
+
+            <section class="curriculum-section" id="pdf-experiencia-section">
+                <h2>Experiência Profissional</h2>
+                <div id="pdf-experiencia"></div>
+            </section>
+
+            <section class="curriculum-section" id="pdf-educacao-section">
+                <h2>Formação Acadêmica</h2>
+                <div id="pdf-educacao"></div>
+            </section>
+
+            <section class="curriculum-section" id="pdf-habilidades-section">
+                <h2>Habilidades</h2>
+                <div id="pdf-habilidades"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/curriculum.js"></script>
+</body>
+</html>
+
