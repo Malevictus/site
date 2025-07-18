@@ -1,552 +1,452 @@
-/* Reset e configurações base */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+// Elementos do DOM
+const form = document.getElementById('curriculumForm');
+const previewBtn = document.getElementById('previewBtn');
+const generatePdfBtn = document.getElementById('generatePdfBtn');
+const preview = document.getElementById('curriculumPreview');
+const pdfTemplate = document.getElementById('pdfTemplate');
+
+// Campos do formulário
+const fields = {
+    nome: document.getElementById('nome'),
+    email: document.getElementById('email'),
+    telefone: document.getElementById('telefone'),
+    endereco: document.getElementById('endereco'),
+    resumo: document.getElementById('resumo'),
+    experiencia: document.getElementById('experiencia'),
+    educacao: document.getElementById('educacao'),
+    habilidades: document.getElementById('habilidades')
+};
+
+// Elementos de erro
+const errorElements = {
+    nome: document.getElementById('nome-error'),
+    email: document.getElementById('email-error'),
+    resumo: document.getElementById('resumo-error')
+};
+
+// Função para validar email
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
 }
 
-:root {
-    /* Cores neutras */
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
-    --secondary-color: #64748b;
-    --background-color: #f8fafc;
-    --surface-color: #ffffff;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --border-color: #e2e8f0;
-    --error-color: #dc2626;
-    --success-color: #16a34a;
+// Função para validar campos obrigatórios
+function validateField(fieldName, value) {
+    const errors = [];
     
-    /* Tipografia */
-    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 1rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 1.875rem;
-    --font-size-4xl: 2.25rem;
-    
-    /* Espaçamentos */
-    --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 3rem;
-    
-    /* Bordas */
-    --border-radius: 0.5rem;
-    --border-radius-lg: 0.75rem;
-    
-    /* Sombras */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
-
-body {
-    font-family: var(--font-family);
-    line-height: 1.6;
-    color: var(--text-primary);
-    background-color: var(--background-color);
-    min-height: 100vh;
-}
-
-/* Container principal */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--spacing-md);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Header */
-.header {
-    padding: var(--spacing-xl) 0;
-    text-align: center;
-    background: linear-gradient(135deg, var(--primary-color) 0%, #3b82f6 100%);
-    color: white;
-    margin-bottom: var(--spacing-2xl);
-}
-
-.header-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--spacing-md);
-}
-
-.back-link {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: opacity 0.2s ease;
-}
-
-.back-link:hover {
-    opacity: 0.8;
-}
-
-.title {
-    font-size: var(--font-size-3xl);
-    font-weight: 700;
-    margin-bottom: var(--spacing-sm);
-}
-
-.subtitle {
-    font-size: var(--font-size-lg);
-    opacity: 0.9;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* Main content */
-.main-content {
-    flex: 1;
-    padding-bottom: var(--spacing-2xl);
-}
-
-/* Hero section */
-.hero-section {
-    display: grid;
-    gap: var(--spacing-2xl);
-    align-items: center;
-    min-height: 60vh;
-}
-
-.hero-text h2 {
-    font-size: var(--font-size-2xl);
-    margin-bottom: var(--spacing-lg);
-    color: var(--text-primary);
-}
-
-.hero-text p {
-    font-size: var(--font-size-lg);
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-2xl);
-    max-width: 600px;
-}
-
-/* Features */
-.features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-xl);
-    margin-bottom: var(--spacing-2xl);
-}
-
-.feature {
-    text-align: center;
-    padding: var(--spacing-lg);
-    background: var(--surface-color);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.feature:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.feature-icon {
-    font-size: var(--font-size-3xl);
-    margin-bottom: var(--spacing-md);
-}
-
-.feature h3 {
-    font-size: var(--font-size-lg);
-    margin-bottom: var(--spacing-sm);
-    color: var(--text-primary);
-}
-
-.feature p {
-    color: var(--text-secondary);
-    font-size: var(--font-size-sm);
-}
-
-/* CTA Section */
-.cta-section {
-    text-align: center;
-}
-
-.cta-button {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    background: var(--primary-color);
-    color: white;
-    text-decoration: none;
-    padding: var(--spacing-lg) var(--spacing-2xl);
-    border-radius: var(--border-radius);
-    font-size: var(--font-size-lg);
-    font-weight: 600;
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow-md);
-}
-
-.cta-button:hover {
-    background: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-lg);
-}
-
-.arrow {
-    transition: transform 0.2s ease;
-}
-
-.cta-button:hover .arrow {
-    transform: translateX(4px);
-}
-
-.cta-note {
-    margin-top: var(--spacing-md);
-    color: var(--text-secondary);
-    font-size: var(--font-size-sm);
-}
-
-/* Curriculum page layout */
-.curriculum-page {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-2xl);
-    align-items: start;
-}
-
-/* Form section */
-.form-container {
-    background: var(--surface-color);
-    padding: var(--spacing-2xl);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
-}
-
-.form-container h2 {
-    margin-bottom: var(--spacing-xl);
-    color: var(--text-primary);
-}
-
-/* Form styles */
-.curriculum-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-}
-
-.form-group label {
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: var(--font-size-sm);
-}
-
-.form-group input,
-.form-group textarea {
-    padding: var(--spacing-md);
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-size: var(--font-size-base);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    font-family: inherit;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.error-message {
-    color: var(--error-color);
-    font-size: var(--font-size-xs);
-    display: none;
-}
-
-.error-message.show {
-    display: block;
-}
-
-.form-group.error input,
-.form-group.error textarea {
-    border-color: var(--error-color);
-}
-
-/* Form actions */
-.form-actions {
-    display: flex;
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-lg);
-}
-
-.btn {
-    padding: var(--spacing-md) var(--spacing-xl);
-    border: none;
-    border-radius: var(--border-radius);
-    font-size: var(--font-size-base);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-primary {
-    background: var(--primary-color);
-    color: white;
-}
-
-.btn-primary:hover {
-    background: var(--primary-hover);
-    transform: translateY(-1px);
-}
-
-.btn-secondary {
-    background: var(--surface-color);
-    color: var(--text-primary);
-    border: 2px solid var(--border-color);
-}
-
-.btn-secondary:hover {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-}
-
-/* Preview section */
-.preview-container {
-    background: var(--surface-color);
-    padding: var(--spacing-2xl);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
-    position: sticky;
-    top: var(--spacing-xl);
-}
-
-.preview-container h2 {
-    margin-bottom: var(--spacing-xl);
-    color: var(--text-primary);
-}
-
-.curriculum-preview {
-    min-height: 400px;
-    border: 2px dashed var(--border-color);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-xl);
-}
-
-.preview-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: var(--text-secondary);
-    text-align: center;
-}
-
-/* PDF Template styles */
-.pdf-template {
-    background: white;
-    color: black;
-}
-
-.curriculum-document {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px;
-    font-family: 'Times New Roman', serif;
-    line-height: 1.6;
-}
-
-.curriculum-header {
-    text-align: center;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #333;
-    padding-bottom: 20px;
-}
-
-.curriculum-header h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.contact-info {
-    font-size: 14px;
-    color: #666;
-}
-
-.contact-info p {
-    margin: 2px 0;
-}
-
-.curriculum-section {
-    margin-bottom: 25px;
-}
-
-.curriculum-section h2 {
-    font-size: 18px;
-    color: #333;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-}
-
-.curriculum-section p,
-.curriculum-section div {
-    font-size: 14px;
-    color: #444;
-    margin-bottom: 10px;
-}
-
-/* Footer */
-.footer {
-    text-align: center;
-    padding: var(--spacing-xl) 0;
-    color: var(--text-secondary);
-    font-size: var(--font-size-sm);
-    border-top: 1px solid var(--border-color);
-    margin-top: auto;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .container {
-        padding: 0 var(--spacing-sm);
+    switch (fieldName) {
+        case 'nome':
+            if (!value.trim()) {
+                errors.push('Nome é obrigatório');
+            } else if (value.trim().length < 2) {
+                errors.push('Nome deve ter pelo menos 2 caracteres');
+            }
+            break;
+            
+        case 'email':
+            if (!value.trim()) {
+                errors.push('E-mail é obrigatório');
+            } else if (!isValidEmail(value)) {
+                errors.push('E-mail deve ter um formato válido');
+            }
+            break;
+            
+        case 'resumo':
+            if (!value.trim()) {
+                errors.push('Resumo profissional é obrigatório');
+            } else if (value.trim().length < 10) {
+                errors.push('Resumo deve ter pelo menos 10 caracteres');
+            }
+            break;
     }
     
-    .header {
-        padding: var(--spacing-lg) 0;
-        margin-bottom: var(--spacing-xl);
-    }
+    return errors;
+}
+
+// Função para mostrar erro
+function showError(fieldName, message) {
+    const errorElement = errorElements[fieldName];
+    const fieldElement = fields[fieldName];
     
-    .header-nav {
-        flex-direction: column;
-        gap: var(--spacing-md);
-        text-align: center;
-    }
-    
-    .title {
-        font-size: var(--font-size-2xl);
-    }
-    
-    .subtitle {
-        font-size: var(--font-size-base);
-    }
-    
-    .hero-text h2 {
-        font-size: var(--font-size-xl);
-    }
-    
-    .hero-text p {
-        font-size: var(--font-size-base);
-    }
-    
-    .features {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-lg);
-    }
-    
-    .curriculum-page {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-xl);
-    }
-    
-    .form-container,
-    .preview-container {
-        padding: var(--spacing-lg);
-    }
-    
-    .form-actions {
-        flex-direction: column;
-    }
-    
-    .btn {
-        width: 100%;
-    }
-    
-    .preview-container {
-        position: static;
+    if (errorElement && fieldElement) {
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+        fieldElement.parentElement.classList.add('error');
     }
 }
 
-@media (max-width: 480px) {
-    .container {
-        padding: 0 var(--spacing-xs);
+// Função para limpar erro
+function clearError(fieldName) {
+    const errorElement = errorElements[fieldName];
+    const fieldElement = fields[fieldName];
+    
+    if (errorElement && fieldElement) {
+        errorElement.textContent = '';
+        errorElement.classList.remove('show');
+        fieldElement.parentElement.classList.remove('error');
+    }
+}
+
+// Função para validar formulário completo
+function validateForm() {
+    let isValid = true;
+    const requiredFields = ['nome', 'email', 'resumo'];
+    
+    // Limpar erros anteriores
+    requiredFields.forEach(fieldName => clearError(fieldName));
+    
+    // Validar cada campo obrigatório
+    requiredFields.forEach(fieldName => {
+        const value = fields[fieldName].value;
+        const errors = validateField(fieldName, value);
+        
+        if (errors.length > 0) {
+            showError(fieldName, errors[0]);
+            isValid = false;
+        }
+    });
+    
+    return isValid;
+}
+
+// Função para formatar texto com quebras de linha
+function formatText(text) {
+    if (!text) return '';
+    return text.split('\n').map(line => line.trim()).filter(line => line).join('<br>');
+}
+
+// Função para gerar preview do currículo
+function generatePreview() {
+    const data = {};
+    
+    // Coletar dados do formulário
+    Object.keys(fields).forEach(key => {
+        data[key] = fields[key].value.trim();
+    });
+    
+    // Verificar se há dados suficientes para preview
+    if (!data.nome && !data.email && !data.resumo) {
+        preview.innerHTML = `
+            <div class="preview-placeholder">
+                <p>Preencha o formulário para ver a pré-visualização do seu currículo</p>
+            </div>
+        `;
+        return;
     }
     
-    .form-container,
-    .preview-container {
-        padding: var(--spacing-md);
+    // Gerar HTML do preview
+    let previewHTML = '<div class="curriculum-document">';
+    
+    // Header
+    if (data.nome || data.email || data.telefone || data.endereco) {
+        previewHTML += '<header class="curriculum-header">';
+        if (data.nome) {
+            previewHTML += `<h1>${data.nome}</h1>`;
+        }
+        previewHTML += '<div class="contact-info">';
+        if (data.email) {
+            previewHTML += `<p>📧 ${data.email}</p>`;
+        }
+        if (data.telefone) {
+            previewHTML += `<p>📞 ${data.telefone}</p>`;
+        }
+        if (data.endereco) {
+            previewHTML += `<p>📍 ${data.endereco}</p>`;
+        }
+        previewHTML += '</div></header>';
     }
     
-    .curriculum-document {
-        padding: 20px;
+    // Resumo Profissional
+    if (data.resumo) {
+        previewHTML += `
+            <section class="curriculum-section">
+                <h2>Resumo Profissional</h2>
+                <p>${formatText(data.resumo)}</p>
+            </section>
+        `;
     }
     
-    .curriculum-header h1 {
-        font-size: 24px;
+    // Experiência Profissional
+    if (data.experiencia) {
+        previewHTML += `
+            <section class="curriculum-section">
+                <h2>Experiência Profissional</h2>
+                <div>${formatText(data.experiencia)}</div>
+            </section>
+        `;
     }
     
-    .curriculum-section h2 {
-        font-size: 16px;
+    // Formação Acadêmica
+    if (data.educacao) {
+        previewHTML += `
+            <section class="curriculum-section">
+                <h2>Formação Acadêmica</h2>
+                <div>${formatText(data.educacao)}</div>
+            </section>
+        `;
+    }
+    
+    // Habilidades
+    if (data.habilidades) {
+        previewHTML += `
+            <section class="curriculum-section">
+                <h2>Habilidades</h2>
+                <div>${formatText(data.habilidades)}</div>
+            </section>
+        `;
+    }
+    
+    previewHTML += '</div>';
+    
+    preview.innerHTML = previewHTML;
+    preview.classList.add('loaded');
+}
+
+// Função para popular template PDF
+function populatePdfTemplate() {
+    const data = {};
+    
+    // Coletar dados do formulário
+    Object.keys(fields).forEach(key => {
+        data[key] = fields[key].value.trim();
+    });
+    
+    // Popular elementos do template PDF
+    const pdfNome = document.getElementById('pdf-nome');
+    const pdfEmail = document.getElementById('pdf-email');
+    const pdfTelefone = document.getElementById('pdf-telefone');
+    const pdfEndereco = document.getElementById('pdf-endereco');
+    const pdfResumo = document.getElementById('pdf-resumo');
+    const pdfExperiencia = document.getElementById('pdf-experiencia');
+    const pdfEducacao = document.getElementById('pdf-educacao');
+    const pdfHabilidades = document.getElementById('pdf-habilidades');
+    
+    // Limpar conteúdo anterior
+    [pdfNome, pdfEmail, pdfTelefone, pdfEndereco, pdfResumo, pdfExperiencia, pdfEducacao, pdfHabilidades].forEach(el => {
+        if (el) el.innerHTML = '';
+    });
+    
+    // Popular com novos dados
+    if (pdfNome) pdfNome.textContent = data.nome || '';
+    if (pdfEmail && data.email) pdfEmail.textContent = `📧 ${data.email}`;
+    if (pdfTelefone && data.telefone) pdfTelefone.textContent = `📞 ${data.telefone}`;
+    if (pdfEndereco && data.endereco) pdfEndereco.textContent = `📍 ${data.endereco}`;
+    
+    // Formatar textos com quebras de linha
+    if (pdfResumo && data.resumo) {
+        pdfResumo.innerHTML = formatText(data.resumo);
+    }
+    if (pdfExperiencia && data.experiencia) {
+        pdfExperiencia.innerHTML = formatText(data.experiencia);
+    }
+    if (pdfEducacao && data.educacao) {
+        pdfEducacao.innerHTML = formatText(data.educacao);
+    }
+    if (pdfHabilidades && data.habilidades) {
+        pdfHabilidades.innerHTML = formatText(data.habilidades);
+    }
+    
+    // Mostrar/ocultar seções baseado no conteúdo
+    const sections = [
+        { id: 'pdf-resumo-section', content: data.resumo },
+        { id: 'pdf-experiencia-section', content: data.experiencia },
+        { id: 'pdf-educacao-section', content: data.educacao },
+        { id: 'pdf-habilidades-section', content: data.habilidades }
+    ];
+    
+    sections.forEach(section => {
+        const element = document.getElementById(section.id);
+        if (element) {
+            element.style.display = section.content ? 'block' : 'none';
+        }
+    });
+    
+    // Garantir que o header seja sempre visível se houver pelo menos nome
+    const headerElement = document.querySelector('#pdfTemplate .curriculum-header');
+    if (headerElement) {
+        headerElement.style.display = data.nome ? 'block' : 'none';
     }
 }
 
-/* Animações */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+// Função para gerar PDF
+async function generatePDF() {
+    if (!validateForm()) {
+        alert('Por favor, corrija os erros no formulário antes de gerar o PDF.');
+        return;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    
+    // Mostrar estado de loading
+    generatePdfBtn.classList.add('loading');
+    generatePdfBtn.textContent = 'Gerando PDF...';
+    generatePdfBtn.disabled = true;
+    
+    try {
+        // Popular template PDF
+        populatePdfTemplate();
+        
+        // Tornar o template visível temporariamente para captura
+        const originalDisplay = pdfTemplate.style.display;
+        pdfTemplate.style.display = 'block';
+        pdfTemplate.style.position = 'absolute';
+        pdfTemplate.style.left = '-9999px';
+        pdfTemplate.style.top = '0';
+        
+        // Aguardar um momento para o DOM se atualizar
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Configurações do PDF
+        const options = {
+            margin: [10, 10, 10, 10],
+            filename: `curriculo_${fields.nome.value.replace(/\s+/g, '_').toLowerCase()}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+                scale: 2,
+                useCORS: true,
+                letterRendering: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff'
+            },
+            jsPDF: { 
+                unit: 'mm', 
+                format: 'a4', 
+                orientation: 'portrait' 
+            }
+        };
+        
+        // Gerar PDF
+        await html2pdf().set(options).from(pdfTemplate).save();
+        
+        // Restaurar estado original do template
+        pdfTemplate.style.display = originalDisplay;
+        pdfTemplate.style.position = '';
+        pdfTemplate.style.left = '';
+        pdfTemplate.style.top = '';
+        
+        // Mostrar mensagem de sucesso
+        showToast('PDF gerado com sucesso!', 'success');
+        
+    } catch (error) {
+        console.error('Erro ao gerar PDF:', error);
+        showToast('Erro ao gerar PDF. Tente novamente.', 'error');
+        
+        // Restaurar estado original do template em caso de erro
+        pdfTemplate.style.display = 'none';
+        pdfTemplate.style.position = '';
+        pdfTemplate.style.left = '';
+        pdfTemplate.style.top = '';
+    } finally {
+        // Remover estado de loading
+        generatePdfBtn.classList.remove('loading');
+        generatePdfBtn.textContent = 'Gerar PDF';
+        generatePdfBtn.disabled = false;
     }
 }
 
-.curriculum-preview.loaded {
-    animation: fadeIn 0.3s ease;
-}
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Validação em tempo real
+    Object.keys(fields).forEach(fieldName => {
+        const field = fields[fieldName];
+        
+        field.addEventListener('blur', function() {
+            if (['nome', 'email', 'resumo'].includes(fieldName)) {
+                const errors = validateField(fieldName, this.value);
+                if (errors.length > 0) {
+                    showError(fieldName, errors[0]);
+                } else {
+                    clearError(fieldName);
+                }
+            }
+        });
+        
+        field.addEventListener('input', function() {
+            // Limpar erro quando usuário começar a digitar
+            if (errorElements[fieldName]) {
+                clearError(fieldName);
+            }
+            
+            // Atualizar preview em tempo real (com debounce)
+            clearTimeout(field.debounceTimer);
+            field.debounceTimer = setTimeout(generatePreview, 300);
+        });
+    });
+    
+    // Botão de preview
+    previewBtn.addEventListener('click', function() {
+        generatePreview();
+        
+        // Scroll suave para o preview
+        document.querySelector('.preview-container').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    });
+    
+    // Botão de gerar PDF
+    generatePdfBtn.addEventListener('click', generatePDF);
+    
+    // Validação do formulário ao submeter
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        generatePDF();
+    });
+    
+    // Gerar preview inicial se houver dados
+    generatePreview();
+});
 
-/* Estados de loading */
-.btn.loading {
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-.btn.loading::after {
-    content: '';
-    width: 16px;
-    height: 16px;
-    margin-left: 8px;
-    border: 2px solid transparent;
-    border-top: 2px solid currentColor;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
+// Função para formatar telefone automaticamente
+fields.telefone.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    
+    if (value.length <= 11) {
+        if (value.length <= 2) {
+            value = value.replace(/(\d{0,2})/, '($1');
+        } else if (value.length <= 7) {
+            value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+        } else {
+            value = value.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+        }
     }
+    
+    e.target.value = value;
+});
+
+// Função para melhorar a experiência do usuário
+function showToast(message, type = 'info') {
+    // Criar elemento de toast
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    
+    // Estilos do toast
+    Object.assign(toast.style, {
+        position: 'fixed',
+        top: '20px',
+        right: '20px',
+        padding: '12px 24px',
+        borderRadius: '8px',
+        color: 'white',
+        fontWeight: '500',
+        zIndex: '9999',
+        transform: 'translateX(100%)',
+        transition: 'transform 0.3s ease',
+        backgroundColor: type === 'success' ? '#16a34a' : type === 'error' ? '#dc2626' : '#2563eb'
+    });
+    
+    document.body.appendChild(toast);
+    
+    // Animar entrada
+    setTimeout(() => {
+        toast.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Remover após 3 segundos
+    setTimeout(() => {
+        toast.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 300);
+    }, 3000);
 }
 
